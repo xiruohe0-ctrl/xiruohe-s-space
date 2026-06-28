@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XIRUO HE // DUALITY</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap');
+
+        :root {
+            --work-bg: #f4f4f0; --work-text: #111111; --work-red: #e63946;
+            --life-bg: #FDFBF7; --life-pink: #d9658b; --life-teal: #1aa69a; --life-text: #1a1a1a;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        
+        body { width: 100%; min-height: 100vh; overflow-x: hidden; font-family: 'Space Grotesk', -apple-system, sans-serif; background-color: var(--work-bg); color: var(--work-text); transition: background-color 0.8s ease, color 0.8s ease; }
+        body.life-mode { background-color: var(--life-bg); color: var(--life-text); }
+
+        /* Background Effects */
+        .dot-matrix { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; background-image: radial-gradient(rgba(0,0,0,0.08) 2px, transparent 2px); background-size: 30px 30px; opacity: 1; transition: opacity 0.6s ease; pointer-events: none; }
+        body.life-mode .dot-matrix { opacity: 0; }
+
+        .aura-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; opacity: 0; transition: opacity 1s ease; overflow: hidden; }
+        body.life-mode .aura-bg { opacity: 1; }
+        .aura-1 { position: absolute; top: -10%; left: -10%; width: 60vw; height: 60vw; background: radial-gradient(circle, rgba(217,101,139,0.12) 0%, transparent 70%); filter: blur(60px); }
+        .aura-2 { position: absolute; bottom: 0%; right: -10%; width: 70vw; height: 70vw; background: radial-gradient(circle, rgba(26,166,154,0.1) 0%, transparent 70%); filter: blur(60px); }
+        .aura-3 { position: absolute; top: 30%; left: 40%; width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(255,196,209,0.15) 0%, transparent 70%); filter: blur(60px); }
+
+        .paper-noise { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22 opacity=%220.06%22/%3E%3C/svg%3E'); opacity: 0; mix-blend-mode: multiply; transition: opacity 0.8s; }
+        body.life-mode .paper-noise { opacity: 1; }
+
+        /* Header */
+        header { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 2rem 4rem; z-index: 1000; pointer-events: none; mix-blend-mode: difference; color: #fff; }
+        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; }
+        .toggle-btn { background: #fff; color: #000; padding: 12px 28px; border-radius: 50px; border: none; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: 0.3s; pointer-events: auto; }
+        body.life-mode .toggle-btn { background: var(--life-pink); color: #fff; box-shadow: 4px 4px 0px rgba(0,0,0,0.1); }
+        .toggle-btn:hover { transform: scale(1.05); }
+
+        /* Realm Switching */
+        .realm { display: none; width: 100%; min-height: 100vh; position: relative; z-index: 10; opacity: 1; transition: opacity 0.4s ease; }
+        .realm.active { display: block; animation: fadeInRealm 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        @keyframes fadeInRealm { 0% { opacity: 0; transform: translateY(15px); } 100% { opacity: 1; transform: translateY(0); } }
+
+        /* --- WORK REALM --- */
+        #realm-work { padding: 8rem 4rem 6rem 4rem; }
+        .work-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(12, 1fr); gap: 3rem; background: rgba(244,244,240,0.85); backdrop-filter: blur(10px); padding: 3.5rem; border-radius: 20px; }
+        .work-hero { grid-column: span 8; }
+        .work-hero h1 { font-size: 4.5rem; line-height: 1; font-weight: 700; margin-bottom: 2rem; letter-spacing: -2px; }
+        .work-hero h1 span { color: var(--work-red); }
+        .edu-box { margin-bottom: 2.5rem; border-left: 4px solid var(--work-red); padding-left: 1.5rem; }
+        .edu-item { font-size: 1.15rem; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 12px; font-weight: 500; }
+        .edu-tag { background: var(--work-text); color: #fff; padding: 4px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
+        .tools { display: flex; gap: 12px; margin-top: 2rem; flex-wrap: wrap; }
+        .tools span { background: #fff; border: 1px solid #ddd; padding: 7px 18px; border-radius: 20px; font-size: 0.9rem; font-weight: 700; transition: 0.3s; cursor: pointer;}
+        .tools span:hover { border-color: var(--work-red); color: var(--work-red); transform: translateY(-3px); }
+.work-info { grid-column: span 4; display: flex; flex-direction: column; align-items: flex-end; text-align: right; }
+.work-info p { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; }
+.work-info a, .copy-email { color: var(--work-text); text-decoration: none; border-bottom: 2px solid var(--work-red) !important; padding-bottom: 2px; cursor: pointer; transition: all 0.3s ease; display: inline-block; }
+.work-info a:hover, .copy-email:hover { color: var(--work-red); opacity: 0.8; }
+        .work-timeline { grid-column: span 12; margin-top: 2rem; border-top: 2px solid var(--work-text); padding-top: 2rem; }
+        .section-header { font-size: 1.6rem; font-weight: 700; margin-bottom: 2.5rem; border-bottom: 5px solid var(--work-red); display: inline-block; padding-bottom: 6px; text-transform: uppercase; }
+        .tl-row { display: grid; grid-template-columns: 1fr 2fr 1fr; padding: 1.6rem 0; border-bottom: 1px solid #ddd; align-items: center; transition: all 0.3s ease; border-left: 0px solid var(--work-red); }
+        .tl-row:hover { background: #fff; padding-left: 1.8rem; padding-right: 1.2rem; border-left: 8px solid var(--work-red); cursor: crosshair; }
+        .tl-time { font-family: monospace; color: #666; font-weight: 700; }
+        .tl-company { font-size: 1.35rem; font-weight: 700; }
+        .tl-role { text-align: right; color: #555; font-weight: 500; }
+        .work-portfolio { grid-column: span 12; margin-top: 2rem; border-top: 2px solid var(--work-text); padding-top: 2rem; }
+        .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
+        .port-card { background: #fff; border: 1px solid #ddd; border-radius: 12px; overflow: hidden; transition: 0.3s; display: flex; flex-direction: column; position: relative; cursor: pointer; }
+        .port-card:hover { transform: translateY(-8px); box-shadow: 0 16px 32px rgba(0,0,0,0.08); border-color: var(--work-red); }
+        .port-media { width: 100%; height: 180px; background: #eee; position: relative; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .port-media img { width: 100%; height: 100%; object-fit: cover; transition: 0.4s; }
+        .port-media::after { content: 'PREVIEW'; position: absolute; background: rgba(230,57,70,0.9); color: #fff; font-size: 0.8rem; font-weight:700; padding: 4px 12px; border-radius: 20px; opacity: 0; transition: 0.3s; }
+        .port-card:hover .port-media::after { opacity: 1; }
+        .port-card:hover .port-media img { transform: scale(1.05); }
+        .port-info { padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1; }
+        .port-info h4 { font-size: 1.15rem; margin-bottom: 0.5rem; font-weight: 700; text-transform: uppercase; }
+        .port-info p { color: #666; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem; flex-grow: 1; }
+        .port-link { align-self: flex-start; display: inline-block; padding: 8px 20px; background: var(--work-text); color: #fff; text-decoration: none; font-weight: 700; font-size: 0.85rem; border-radius: 50px; transition: 0.3s; margin-top: auto; }
+        .port-link:hover { background: var(--work-red); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(230, 57, 70, 0.4); }
+
+        /* --- LIFE REALM START --- */
+        #realm-life { padding: 6rem 2rem 8rem 2rem; overflow-y: auto; overflow-x: hidden; position: relative; }
+
+        .poster-text-group { text-align: center; margin-top: 2rem; margin-bottom: 4rem; position: relative; z-index: 2; }
+        .poster-line-deco { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 2rem; font-size: 0.85rem; font-weight: 700; color: #333; letter-spacing: 1px; }
+        .poster-line-deco::before, .poster-line-deco::after { content: ''; width: 60px; height: 1px; background: var(--life-teal); }
+        .script-text { font-family: 'Caveat', cursive; font-size: 4.5rem; color: var(--life-pink); transform: rotate(-5deg); display: block; margin-bottom: -40px; margin-left: -120px; position: relative; z-index: 5; text-shadow: 2px 2px 0 rgba(255,255,255,0.8); }
+        .serif-black { font-family: 'Playfair Display', serif; font-size: 6.5rem; font-weight: 900; color: #1a1a1a; line-height: 0.9; letter-spacing: -2px; text-transform: uppercase; }
+        .serif-pink { font-family: 'Playfair Display', serif; font-size: 6rem; font-weight: 900; color: var(--life-pink); line-height: 0.9; text-transform: uppercase; margin-top: 5px; }
+      /* 1. TV HERO CONTAINER & BUBBLES */
+        .tv-hero-container {
+            position: relative; max-width: 900px; margin: 3rem auto 10rem auto; z-index: 10;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        .teal-tv { background: var(--life-teal); border-radius: 40px; padding: 30px 110px 40px 30px; box-shadow: 15px 20px 30px rgba(0,0,0,0.15), inset -5px -8px 15px rgba(0,0,0,0.1); border: 2px solid #148f85; position: relative; z-index: 10; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .teal-tv:hover { transform: scale(1.02) rotate(1deg); }
+
+        .tv-feet { position: absolute; bottom: -15px; left: 15%; width: 70%; height: 20px; display: flex; justify-content: space-between; z-index: -1; }
+        .tv-foot { width: 30px; height: 25px; background: var(--life-teal); border-radius: 0 0 10px 10px; border: 2px solid #148f85; border-top: none; }
+        .teal-tv-screen { width: 480px; aspect-ratio: 4/3; background: #fff; border-radius: 60px 60px 20px 20px; border: 15px solid #111; box-shadow: inset 0 0 25px rgba(0,0,0,0.6); overflow: hidden; position: relative; }
+        .teal-tv-screen video { width: 100%; height: 100%; object-fit: cover; }
+        
+        .live-tag { position: absolute; top: 15px; left: 20px; background: rgba(217, 43, 43, 0.9); color: white; padding: 2px 8px; border-radius: 5px; font-size: 0.8rem; font-weight: bold; font-family: -apple-system, sans-serif; letter-spacing: 1px; animation: pulse 2s infinite; z-index: 10; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+        .teal-dials { position: absolute; right: 30px; top: 45px; display: flex; flex-direction: column; gap: 20px; align-items: center; }
+        .dial-knob { width: 45px; height: 45px; border-radius: 50%; background: #222; border: 3px solid var(--life-teal); box-shadow: 0 4px 8px rgba(0,0,0,0.4); position: relative; cursor: pointer; transition: 0.3s; }
+        .dial-knob:hover { transform: rotate(45deg); }
+        .dial-knob::after { content: ''; position: absolute; top: 5px; left: 20px; width: 4px; height: 12px; background: #fff; border-radius: 2px; }
+        .dial-speaker { margin-top: 15px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+        .speaker-hole { width: 7px; height: 7px; background: rgba(0,0,0,0.5); border-radius: 50%; box-shadow: inset 1px 1px 2px rgba(0,0,0,0.8), 1px 1px 0 rgba(255,255,255,0.2); }
+
+        @keyframes floatBubble { 0% { transform: translateY(0px) scale(1); } 100% { transform: translateY(-10px) scale(1.02); } }
+        @keyframes floatCenterBubble { 0% { transform: translateX(-50%) translateY(0px) scale(1); } 100% { transform: translateX(-50%) translateY(-10px) scale(1.02); } }
+
+        .floating-bubble {
+            position: absolute; padding: 14px 22px;
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.6); border-radius: 24px;
+            font-size: 1rem; line-height: 1.6; color: #333;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.06); z-index: 20; max-width: 280px;
+            opacity: 0; pointer-events: none;
+            transform: scale(0.8) translateY(30px);
+            transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .floating-bubble.pop-in { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; animation: floatBubble 4s ease-in-out infinite alternate 0.6s; }
+        .floating-bubble:hover { z-index: 30; filter: brightness(1.05); }
+        .floating-bubble strong { color: var(--life-pink); }
+        
+        .fb-1 { top: -5%; left: -15%; border-bottom-right-radius: 4px; }
+        .fb-2 { top: 15%; right: -20%; border-bottom-left-radius: 4px; background: var(--life-pink); color: #fff; border:none; box-shadow: 0 15px 30px rgba(217, 101, 139, 0.3); }
+        .fb-2 strong { color: #ffe6eb; }
+        .fb-3 { bottom: 15%; left: -22%; border-top-right-radius: 4px; }
+        .fb-4 { bottom: -5%; right: -15%; border-top-left-radius: 4px; }
+        
+        /* 交互特效版：找我玩按钮 */
+        .fb-5 { 
+            bottom: -25%; left: 50%; 
+            background: var(--life-teal); color: #fff; border:none; 
+            box-shadow: 0 15px 30px rgba(26, 166, 154, 0.3); 
+            cursor: pointer; overflow: hidden;
+            transform: translateX(-50%) scale(0.8) translateY(20px);
+            padding: 0; width: 220px; height: 56px; border-radius: 30px;
+        }
+        .fb-5.pop-in { transform: translateX(-50%) scale(1) translateY(0); animation: floatCenterBubble 4s ease-in-out infinite alternate 0.6s; }
+        
+        /* Hover 文字翻转 */
+        .fb-5-content { position: relative; width: 100%; height: 100%; }
+        .fb-5-front, .fb-5-back {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .fb-5-front { font-family: 'Caveat', cursive; font-size: 1.8rem; transform: translateY(0); opacity: 1; }
+        .fb-5-back { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; transform: translateY(100%); opacity: 0; background: #111; color: #00f5d4; border-radius: 30px;}
+        
+        .fb-5:hover .fb-5-front { transform: translateY(-100%); opacity: 0; }
+        .fb-5:hover .fb-5-back { transform: translateY(0); opacity: 1; }
+
+        /* 2. ARC SCROLL GALLERY (增强弧度版) */
+        .arc-gallery-wrapper {
+            width: 100vw; position: relative; left: 50%; transform: translateX(-50%);
+            padding: 2rem 0; margin-bottom: 2rem; z-index: 15;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.4), transparent);
+        }
+        .arc-header { text-align: center; font-family: 'Caveat', cursive; font-size: 3rem; color: var(--life-pink); margin-bottom: 1rem; }
+        .scroll-hint { text-align: center; font-size: 0.8rem; letter-spacing: 2px; color: #888; margin-bottom: 10px; text-transform: uppercase; }
+        
+        .arc-scroll-container {
+            display: flex; gap: 2rem; overflow-x: auto; scroll-snap-type: x mandatory;
+            padding: 40px calc(50vw - 140px) 150px calc(50vw - 140px);
+            scrollbar-width: none; cursor: grab;
+        }
+        .arc-scroll-container::-webkit-scrollbar { display: none; }
+        .arc-scroll-container:active { cursor: grabbing; }
+        
+        .arc-item {
+            flex-shrink: 0; width: 280px; height: 360px; scroll-snap-align: center;
+            background: #fff; padding: 12px 12px 50px 12px; border: 1px solid #ddd; border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transform-origin: bottom center; position: relative;
+            transition: transform 0.1s linear; 
+        }
+        .arc-item:hover {
+            transform: translateY(-20px) scale(1.1) rotate(0deg) !important;
+            z-index: 100; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+        }
+        .arc-item img { width: 100%; height: 100%; object-fit: cover; border-radius: 2px; pointer-events: none; }
+        .arc-caption { position: absolute; bottom: 12px; left: 0; width: 100%; text-align: center; font-family: 'Caveat', cursive; font-size: 1.5rem; color: #222; pointer-events: none;}
+
+        /* 3. DIARY SECTION (留白随想) */
+        .diary-section {
+            max-width: 700px; margin: 1rem auto 8rem auto; padding: 0 2rem;
+            position: relative; z-index: 10;
+        }
+        .diary-title { font-family: 'Caveat', cursive; font-size: 2.5rem; color: var(--life-pink); margin-bottom: 1.5rem; text-align: center; }
+        .diary-content { font-size: 1.05rem; line-height: 1.8; color: #444; text-align: justify; margin-bottom: 2rem; }
+        .diary-content p { margin-bottom: 1.5rem; }
+        .diary-signature { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: #111; text-align: right; font-style: italic; }
+
+        /* 4. PHOTO DUMP MASONRY (完美找回手账拼贴板) */
+        .moodboard-wrapper { max-width: 1100px; margin: 0 auto 8rem auto; position: relative; z-index: 10; padding: 0 2rem; }
+        .moodboard-header { text-align: center; margin-bottom: 4rem; }
+        .moodboard-header h2 { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 900; color: #111; text-transform: uppercase; margin-bottom: 10px; }
+        .moodboard-header p { font-family: 'Caveat', cursive; font-size: 1.8rem; color: #666; }
+
+        .masonry-grid { column-count: 3; column-gap: 30px; }
+        .masonry-item { break-inside: avoid; margin-bottom: 30px; position: relative; cursor: crosshair; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s; }
+        .masonry-item:hover { transform: scale(1.03) translateY(-8px); z-index: 10; box-shadow: 0 20px 45px rgba(0,0,0,0.15); }
+        .masonry-item img { width: 100%; height: auto; display: block; object-fit: cover; }
+
+        .mb-polaroid { background: #fff; padding: 12px 12px 45px 12px; border: 1px solid #ddd; border-radius: 2px; box-shadow: 4px 10px 20px rgba(0,0,0,0.06); }
+        .mb-polaroid::after { content: attr(data-cap); position: absolute; bottom: 12px; left: 0; width: 100%; text-align: center; font-family: 'Caveat', cursive; font-size: 1.4rem; color: #111; pointer-events: none;}
+        
+        .mb-film { background: #111; padding: 0 15px; border-left: 8px dotted #fff; border-right: 8px dotted #fff; box-shadow: 4px 10px 20px rgba(0,0,0,0.1); }
+        .mb-film img { margin-top: 15px; filter: grayscale(20%) contrast(1.1); }
+        .mb-film::after { content: attr(data-cap); position: absolute; bottom: 15px; left: 0; width: 100%; text-align: center; font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; color: var(--life-teal); letter-spacing: 2px; pointer-events: none;}
+
+        .mb-glass { padding: 8px; background: rgba(255,255,255,0.4); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.6); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        .mb-glass img { border-radius: 8px; }
+
+        .mb-tape { position: absolute; width: 80px; height: 25px; background: rgba(255,255,255,0.8); backdrop-filter: blur(4px); box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 5; border: 1px solid rgba(0,0,0,0.05); pointer-events: none;}
+        .tape-c { top: -10px; left: 50%; transform: translateX(-50%) rotate(-2deg); }
+        .tape-l { top: -10px; left: -10px; transform: rotate(-45deg); width: 60px; }
+        .tape-r { top: -10px; right: -10px; transform: rotate(45deg); width: 60px; }
+
+        @media (max-width: 900px) {
+            .serif-black { font-size: 4rem; } .serif-pink { font-size: 3.5rem; }
+            .tv-hero-container { margin-top: 4rem; margin-bottom: 8rem; }
+            .teal-tv { padding: 15px; flex-direction: column; align-items: center; }
+            .teal-tv-screen { width: 100%; aspect-ratio: auto; height: 220px; }
+            .teal-dials { position: relative; right: auto; top: auto; flex-direction: row; margin-top: 15px; }
+            .dial-knob { margin-bottom: 0; } .speaker-grill { display: none; }
+            
+            .floating-bubble { position: relative; top: auto !important; left: auto !important; right: auto !important; bottom: auto !important; transform: none !important; margin: 15px auto; display: block; max-width: 90%; animation: none !important;}
+            .fb-5 { margin-left: auto; }
+            .floating-bubble.pop-in { transform: none !important; animation: floatBubble 4s ease-in-out infinite alternate 0.6s !important; }
+            .fb-5.pop-in { transform: none !important; animation: floatBubble 4s ease-in-out infinite alternate 0.6s !important; }
+            .tv-hero-container { flex-direction: column; }
+            
+            .masonry-grid { column-count: 2; }
+        }
+        @media (max-width: 600px) { .masonry-grid { column-count: 1; } }
+    </style>
+</head>
+<body class="work-mode">
+
+    <!-- 动态底纹 -->
+    <div class="dot-matrix"></div>
+    <div class="aura-bg"><div class="aura-1"></div><div class="aura-2"></div><div class="aura-3"></div></div>
+    <div class="paper-noise"></div>
+
+    <header>
+        <div class="logo">XIRUO.HE</div>
+        <button class="toggle-btn" id="switcher">FLIP TO LIFE ✧</button>
+    </header>
+
+    <!-- === WORK === -->
+    <main class="realm active" id="realm-work">
+        <div class="work-container">
+            <div class="work-hero">
+                <h1>Structured<br><span>Creativity.</span></h1>
+                <div class="edu-box">
+                    <div class="edu-item"><span class="edu-tag">MASTER</span><strong>HKUST 香港科技大学</strong> / 艺术与机器创造力 MA</div>
+                    <div class="edu-item"><span class="edu-tag">BACHELOR</span><strong>MUST 澳门科技大学</strong> / 影视制作 BA</div>
+                </div>
+                <div class="tools"><span>Figma</span><span>Canva</span><span>Final Cut Pro</span><span>Vibe Coding ✦</span></div>
+            </div>
+            <div class="work-info">
+                <p>贺熙若 // XIRUO HE</p>
+                <p><span id="workEmail" class="copy-email" onclick="copyEmail(event)">xiruohe0@gmail.com</span></p>
+                <p style="color: #666; font-size: 0.9rem; margin-top: 1.5rem;">[ STATUS: ACTIVE ]</p>
+            </div>
+            <div class="work-timeline">
+                <div class="section-header">Internship Experience</div>
+                <div class="tl-row"><div class="tl-time">PHASE_05</div><div class="tl-company">Kuaishou / 快手</div><div class="tl-role">快影用户运营</div></div>
+                <div class="tl-row"><div class="tl-time">PHASE_04</div><div class="tl-company">vivo</div><div class="tl-role">影像产品运营 & 企划</div></div>
+                <div class="tl-row"><div class="tl-time">PHASE_03</div><div class="tl-company">ByteDance / 字节跳动</div><div class="tl-role">抖音直播玩法发行运营</div></div>
+                <div class="tl-row"><div class="tl-time">PHASE_02</div><div class="tl-company">BIGO LIVE</div><div class="tl-role">北美市场营销</div></div>
+                <div class="tl-row" style="border:none;"><div class="tl-time">PHASE_01</div><div class="tl-company">Mango TV / 芒果TV</div><div class="tl-role">项目核心宣推</div></div>
+            </div>
+            <div class="work-portfolio">
+                <div class="section-header">Selected Projects</div>
+                <div class="portfolio-grid">
+                   <div class="port-card">
+                        <div class="port-media">
+                            <img src="https://i.imgur.com/1t6To8c.jpeg" alt="AI Video Cover">
+                        </div>
+                        <div class="port-info">
+                            <h4>AI VIDEO / 影像</h4>
+                            <p>利用 AI 生成工具探索视觉表现边界，将脑内概念具象化为短片影像。</p>
+                            <a href="https://youtu.be/eEcfV6mrmNs" class="port-link" target="_blank">WATCH ON YOUTUBE ↗</a>
+                        </div>
+                    </div>
+
+                    <div class="port-card">
+                        <div class="port-media">
+                            <img src="https://i.imgur.com/QKjRCM4.png" alt="AI Game Cover">
+                        </div>
+                        <div class="port-info">
+                            <h4>AI 动态交互</h4>
+                            <p>探索轻量级的 AI 交互体验设计。赋予数字内容更多交互生命力。</p>
+                            <a href="https://merry-charisma-l51c-n51a58vou-he-xiruos-projects.vercel.app/" class="port-link" target="_blank">INTERACT ↗</a>
+                        </div>
+                    </div>
+
+                    <div class="port-card">
+                        <div class="port-media">
+                            <img src="https://i.imgur.com/KNTpN76.png" alt="Film Cover">
+                        </div>
+                        <div class="port-info">
+                            <h4>传统影视制作</h4>
+                            <p>包含前期导演&剧本构思、现场实拍执行以及后期剪辑叙事等。</p>
+                            <a href="https://www.youtube.com/watch?v=你的链接3" class="port-link" target="_blank">WATCH ON YOUTUBE ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- === LIFE === -->
+    <main class="realm" id="realm-life">
+        <div class="poster-text-group">
+            <div class="poster-line-deco">@xiruo.he &nbsp; — &nbsp; INFJ & Scorpio</div>
+            <span class="script-text">Welcome to,</span>
+            <div class="serif-black">XIRUO HE'S</div>
+            <div class="serif-pink">LIFE ARCHIVE</div>
+        </div>
+
+        <div class="tv-hero-container">
+            <div class="teal-tv">
+                <div class="teal-tv-screen">
+                    <div class="live-tag">● LIVE</div>
+                    <video id="tvVideo" loop autoplay muted playsinline src="https://i.imgur.com/j7OsczG.mp4" onclick="toggleMute()" style="cursor: pointer;"></video>
+                </div>
+                <div class="teal-dials">
+                    <div class="dial-knob"></div><div class="dial-knob"></div>
+                    <div class="dial-speaker">
+                        <div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div>
+                        <div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div>
+                        <div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div>
+                    </div>
+                </div>
+                <div class="tv-feet"><div class="tv-foot"></div><div class="tv-foot"></div></div>
+            </div>
+
+            <!-- 松绑后的气泡 -->
+            <div class="floating-bubble fb-1">👋 Hello! 欢迎来到另一面的我。在秩序与感性之间游走。</div>
+            <div class="floating-bubble fb-2">穿梭于不同维度的<strong> INFJ天蝎座 🦂 <br>一个在大湾区漫游的<strong>湖南银 🌶️</strong></div>
+            <div class="floating-bubble fb-3">发散思维感受派，热衷<strong>美食探店&美学探究 🍜</strong>和那只<strong>可爱的咪 🐾</strong>。</div>
+            <div class="floating-bubble fb-4">生活是不停歇的 <strong>Citywalk</strong>：天南地北都希望留下足迹。</div>
+            
+            <!-- 酷炫的 Hover 翻转、点击复制微信按钮 -->
+            <div class="floating-bubble fb-5" onclick="copyWechat(event)">
+                <div class="fb-5-content">
+                    <div class="fb-5-front">Find Me ✦</div>
+                    <div class="fb-5-back" id="wechatText">WeChat: xran1114</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 弧形滚动 (增强弧线效果) -->
+    <div class="arc-gallery-wrapper">
+            <h2 class="arc-header">Moments & Hobbies ✦</h2>
+            <div class="scroll-hint">SWIPE / SCROLL ➔</div>
+            <div class="arc-scroll-container" id="arcScroll">
+                
+                <div class="arc-item">
+                    <img src="https://i.imgur.com/26u3FzI.jpeg" alt="Music">
+                    <div class="arc-caption">Vibe & Music 🎧</div>
+                </div>
+                
+                <div class="arc-item">
+                    <img src="https://i.imgur.com/3TDLQDr.jpeg" alt="Gaming">
+                    <div class="arc-caption">KPL Mood 🎮</div>
+                </div>
+                
+                <div class="arc-item">
+                    <img src="https://i.imgur.com/vhqHxot.jpeg" alt="Astro">
+                    <div class="arc-caption">Astro & Tarot 🔮</div>
+                </div>
+                
+                <div class="arc-item">
+                    <img src="https://i.imgur.com/ojcs1NS.jpeg" alt="Travel">
+                    <div class="arc-caption">Travel 🚶‍♀️</div>
+                </div>
+                
+                <div class="arc-item">
+                    <img src="https://i.imgur.com/p4vuKWI.jpeg" alt="Photography">
+                    <div class="arc-caption">Record 📷</div>
+                </div>
+                
+                <div class="arc-item">
+                    <img src="https://i.imgur.com/yA275Ne.jpeg" alt="Cat">
+                    <div class="arc-caption">My cat 🐈</div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="diary-section">
+            <h2 class="diary-title">Random Thoughts 💭</h2>
+            
+            <div class="diary-content" style="text-align: center;">
+                <p>其实一直想做一个个人主页，但总拖着没动。</p>
+                
+                <p>会想很多：比如要不要做得更完整一点？结构再清晰一点？<br>但又会突然觉得麻烦——算了，不想弄了、或者说真的有必要做吗？</p>
+                
+                <p>所以整个过程基本就是来回横跳=-=<br>
+                   后来呢我就告诉自己：<strong>想到就做，不然会一直卡在那里。</strong></p>
+                
+                <p>于是断断续续鼓捣了一周，这个主页就出炉啦。<br>
+                   目前看，也没觉得它很“完成”，更像是一个暂时的存档版本。<br>
+                   有点样样通样样松，但也确实是我现在的真实状态。</p>
+                
+                <p style="font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-top: 2.5rem; color: var(--life-pink); font-style: italic;">
+                   " 不过很多东西好像都是这样——<br>不是想清楚才开始，是开始了才慢慢变清楚一点。"
+                </p>
+            </div>
+            
+            <div class="diary-signature" style="margin-top: 2rem; text-align: right;">— Xiruo.</div>
+        </div>
+
+        <!-- Masonry Moodboard (无尽拼贴板) -->
+<div class="moodboard-wrapper">
+            <div class="moodboard-header">
+                <h2>Photo Dump.</h2>
+                <p>Random captures, vibes & daily fragments ✨</p>
+            </div>
+            
+            <div class="masonry-grid">
+                
+                <div class="masonry-item mb-polaroid" data-cap="DAILY 📖" style="position: relative;">
+                    <div class="mb-tape tape-c"></div>
+                    <img src="https://i.imgur.com/Hhmietp.jpeg" alt="OOTD">
+                </div>
+                
+                <div class="masonry-item mb-glass" style="position: relative;">
+                    <img src="https://i.imgur.com/y759qEV.jpeg" alt="Museum">
+                </div>
+                
+                <div class="masonry-item mb-film" style="position: relative; height: 180px; display: flex; align-items: center; justify-content: center; text-align: center;">
+                    <div style="color: var(--life-teal); font-family: 'Space Grotesk', sans-serif; font-size: 0.95rem; letter-spacing: 2px; line-height: 1.6; padding: 0 10px;">
+                        必须说我是帮朋友出片的能手！
+                      欢迎找我一起玩！
+                    </div>
+                </div>
+                
+                <div class="masonry-item mb-polaroid" data-cap="Camera equipments 📹" style="position: relative;">
+                    <div class="mb-tape tape-l"></div>
+                    <img src="https://i.imgur.com/AYXpwRw.jpeg" alt="Camera">
+                </div>
+                
+                <div class="masonry-item mb-glass" style="position: relative;">
+                    <div class="mb-tape tape-r"></div>
+                    <img src="https://i.imgur.com/z7nws43.jpeg" alt="Music">
+                </div>
+                
+                <div class="masonry-item mb-polaroid" data-cap="🌕 ☁️" style="position: relative;">
+                    <img src="https://i.imgur.com/OSPBtq0.jpeg" alt="Scenery">
+                </div>
+                
+                <div class="masonry-item mb-film" data-cap="in my pov_" style="position: relative;">
+                    <img src="https://i.imgur.com/j9YIgVb.jpeg" alt="Jeju" style="padding-bottom: 40px;">
+                </div>
+                
+                <div class="masonry-item mb-glass" style="position: relative;">
+                    <img src="https://i.imgur.com/KP1owqM.jpeg" alt="喵">
+                </div>
+                
+                <div class="masonry-item mb-polaroid" data-cap="back2 life ☕️" style="position: relative;">
+                    <div class="mb-tape tape-c"></div>
+                    <img src="https://i.imgur.com/B4IJUJZ.jpeg" alt="Citywalk">
+                </div>
+
+            </div>
+        </div> </main>
+<script>
+    let isWork = true;
+    const body = document.body;
+    const switcher = document.getElementById('switcher');
+    const rWork = document.getElementById('realm-work');
+    const rLife = document.getElementById('realm-life');
+    let isAnimating = false;
+
+    // 初始化弧形居中函数
+    function centerArc() {
+        const arcContainer = document.getElementById('arcScroll');
+        if(arcContainer) {
+            const centerPosition = (arcContainer.scrollWidth - arcContainer.clientWidth) / 2;
+            arcContainer.scrollLeft = centerPosition;
+        }
+    }
+
+    // 丝滑淡入淡出转场 (Bug 修复版！)
+    switcher.addEventListener('click', () => {
+        if(isAnimating) return;
+        isAnimating = true;
+
+        const activeRealm = isWork ? rWork : rLife;
+        const nextRealm = isWork ? rLife : rWork;
+        
+        // 1. 淡出当前层
+        activeRealm.style.opacity = '0';
+        if (isWork) {
+            document.querySelectorAll('.floating-bubble').forEach(b => b.classList.remove('pop-in'));
+        }
+
+        setTimeout(() => {
+            activeRealm.classList.remove('active');
+            
+            isWork = !isWork;
+            body.className = isWork ? 'work-mode' : 'life-mode';
+            switcher.innerHTML = isWork ? 'FLIP TO LIFE ✧' : 'BACK TO WORK ⚙️';
+            
+            window.scrollTo({ top: 0, behavior: 'instant' });
+            
+            // 2. 淡入下一层
+            nextRealm.classList.add('active');
+            nextRealm.style.opacity = '1'; // 👈 这里是关键修复！强制把下一层设为可见！
+            
+            if (!isWork) {
+                centerArc();
+                updateArc();
+                
+                const bubbles = document.querySelectorAll('.floating-bubble');
+                bubbles.forEach((b, index) => {
+                    setTimeout(() => b.classList.add('pop-in'), index * 150 + 200);
+                });
+            }
+
+            setTimeout(() => { isAnimating = false; }, 600);
+        }, 400); 
+    });
+
+    // --- 弧形滚动照片墙计算 ---
+    const arcContainer = document.getElementById('arcScroll');
+    const arcItems = document.querySelectorAll('.arc-item');
+
+    function updateArc() {
+        if(!arcContainer || isWork) return; 
+        const containerCenter = arcContainer.getBoundingClientRect().left + arcContainer.offsetWidth / 2;
+        
+        arcItems.forEach(item => {
+            const itemCenter = item.getBoundingClientRect().left + item.offsetWidth / 2;
+            const maxDist = arcContainer.offsetWidth;
+            
+            let normalizedDist = (itemCenter - containerCenter) / maxDist;
+            normalizedDist = Math.max(-1, Math.min(1, normalizedDist));
+            
+            const yOffset = Math.pow(normalizedDist, 2) * 250; 
+            const rotation = normalizedDist * 45; 
+            
+            item.style.transform = `translateY(${yOffset}px) rotate(${rotation}deg)`;
+        });
+    }
+
+    if(arcContainer) {
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        arcContainer.addEventListener('mousedown', (e) => {
+            isDown = true;
+            startX = e.pageX - arcContainer.offsetLeft;
+            scrollLeft = arcContainer.scrollLeft;
+        });
+        arcContainer.addEventListener('mouseleave', () => isDown = false);
+        arcContainer.addEventListener('mouseup', () => isDown = false);
+        arcContainer.addEventListener('mousemove', (e) => {
+            if(!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - arcContainer.offsetLeft;
+            const walk = (x - startX) * 2; 
+            arcContainer.scrollLeft = scrollLeft - walk;
+        });
+
+        arcContainer.addEventListener('scroll', updateArc);
+        window.addEventListener('resize', updateArc);
+        setInterval(updateArc, 100); 
+    }
+
+    // 点击复制微信的交互逻辑
+    function copyWechat(e) {
+        e.stopPropagation();
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText("xran1114").then(() => { showCopiedFeedback(); });
+        } else {
+            let textArea = document.createElement("textarea");
+            textArea.value = "xran1114";
+            document.body.appendChild(textArea);
+            textArea.select();
+            try { document.execCommand('copy'); showCopiedFeedback(); } catch (err) {}
+            document.body.removeChild(textArea);
+        }
+    }
+
+    function showCopiedFeedback() {
+        const backText = document.getElementById('wechatText');
+        if(backText) {
+            const originalText = backText.innerHTML;
+            backText.innerHTML = "COPIED! ✔";
+            backText.style.color = "#fff";
+            setTimeout(() => {
+                backText.innerHTML = originalText;
+                backText.style.color = "#00f5d4";
+            }, 2000);
+        }
+    }
+  // 点击复制邮箱逻辑
+        function copyEmail(e) {
+            e.stopPropagation();
+            const email = "xiruohe0@gmail.com";
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(email).then(() => { showEmailFeedback(); });
+            } else {
+                let textArea = document.createElement("textarea");
+                textArea.value = email;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try { document.execCommand('copy'); showEmailFeedback(); } catch (err) {}
+                document.body.removeChild(textArea);
+            }
+        }
+
+        // 复制成功后的文字变化反馈
+        function showEmailFeedback() {
+            const emailText = document.getElementById('workEmail');
+            if(emailText) {
+                const originalText = "xiruohe0@gmail.com";
+                emailText.innerHTML = "COPIED! ✔";
+                emailText.style.color = "var(--work-red)";
+                
+                // 2秒后恢复原样
+                setTimeout(() => {
+                    emailText.innerHTML = originalText;
+                    emailText.style.color = "var(--work-text)";
+                }, 2000);
+            }
+        }
+// 点击电视屏幕切换静音/有声音
+        function toggleMute() {
+            const video = document.getElementById('tvVideo');
+            if (video) {
+                // 取反静音状态
+                video.muted = !video.muted;
+                
+                // 炫酷的小反馈：如果开启了音量，让整个电视机晃动一下
+                const tv = document.querySelector('.teal-tv');
+                if (!video.muted && tv) {
+                    tv.style.transform = 'scale(1.05) rotate(-1deg)';
+                    setTimeout(() => {
+                        tv.style.transform = '';
+                    }, 200);
+                }
+            }
+        }
+      </script>
+</body>
+</html>
