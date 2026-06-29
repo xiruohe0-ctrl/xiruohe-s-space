@@ -335,19 +335,18 @@
             <div class="serif-pink">LIFE ARCHIVE</div>
         </div>
 
-        <div class="tv-hero-container">
-            <div class="teal-tv">
-                <div class="teal-tv-screen">
-                    <div class="live-tag">● LIVE</div>
-                    <div class="teal-tv-screen">
-    <iframe id="tvVideo" src="//player.bilibili.com/player.html?isOutside=true&aid=116831650057662&bvid=BV14nT566EJW&cid=39498154069&p=1&autoplay=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width: 100%; height: 100%; display: block;"></iframe>
+        <div class="teal-tv-screen" style="position: relative; overflow: hidden;">
+    <div class="live-tag" style="position: relative; z-index: 10;">● LIVE</div>
+    
+    <!-- 🌟 只有这唯一的一行视频！没有多余的 div 框！ -->
+    <iframe id="tvVideo" src="//player.bilibili.com/player.html?isOutside=true&aid=116831650057662&bvid=BV14nT566EJW&cid=39498154069&p=1&autoplay=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; transform: scale(1.35); transform-origin: center; z-index: 1; pointer-events: none;"></iframe>
+    
+    <div class="dial-speaker" style="position: relative; z-index: 10;">
+        <div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div>
+        <div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div>
+        <div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div>
+    </div>
 </div>
-                    <div class="dial-speaker">
-                        <div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div>
-                        <div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div>
-                        <div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div><div class="speaker-hole"></div>
-                    </div>
-                </div>
                 <div class="tv-feet"><div class="tv-foot"></div><div class="tv-foot"></div></div>
             </div>
 
