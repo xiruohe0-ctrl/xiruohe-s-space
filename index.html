@@ -16,7 +16,8 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
-        
+        <body>
+  <div class="page">
         body { width: 100%; min-height: 100vh; overflow-x: hidden; font-family: 'Space Grotesk', -apple-system, sans-serif; background-color: var(--work-bg); color: var(--work-text); transition: background-color 0.8s ease, color 0.8s ease; }
         body.life-mode { background-color: var(--life-bg); color: var(--life-text); }
 
@@ -302,21 +303,16 @@ img, video, iframe {
     max-width: 100%;
 }
 
-/* 📱 手机端适配（只保留这一套） */
 @media (max-width: 768px) {
 
-    body {
-        overflow-x: hidden;
+    .page {
+        padding: 12px;
+        gap: 12px;
     }
 
     .teal-tv {
         width: 92vw;
-        max-width: 480px;
-        margin: 0 auto;
-    }
-
-    .teal-tv-screen {
-        width: 100%;
+        max-width: 420px;
     }
 
     .tv-overlay-btn {
@@ -326,6 +322,22 @@ img, video, iframe {
         right: 12px;
         font-size: 16px;
     }
+}
+      html, body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.page {
+    max-width: 100%;
+    overflow-x: hidden;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 20px;
+    padding: 16px;
 }
     </style>
 </head>
@@ -752,5 +764,6 @@ img, video, iframe {
             }
         }
       </script>
-</body>
+</div>
+      </body>
 </html>
