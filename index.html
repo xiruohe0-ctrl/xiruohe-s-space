@@ -106,12 +106,12 @@
         .tv-feet { position: absolute; bottom: -15px; left: 15%; width: 70%; height: 20px; display: flex; justify-content: space-between; z-index: -1; }
         .tv-foot { width: 30px; height: 25px; background: var(--life-teal); border-radius: 0 0 10px 10px; border: 2px solid #148f85; border-top: none; }
         
-        /* 🔥 关键修复：给电视机做「宽屏升级」！16:9比例让B站原生的音量条完美露出 */
+        /* 🔥 电视机宽屏 */
         .teal-tv-screen {
-            width: 520px; /* 稍微加宽一点，更好看 */
-            aspect-ratio: 16 / 9; /* 宽屏比例！完美适配 */
+            width: 520px; 
+            aspect-ratio: 16 / 9; 
             background: #000;
-            border-radius: 30px 30px 15px 15px; /* 因为宽屏了，圆角稍微缩减更真实 */
+            border-radius: 30px 30px 15px 15px; 
             border: 15px solid #111;
             box-shadow: inset 0 0 25px rgba(0,0,0,0.6);
             overflow: hidden;
@@ -121,7 +121,6 @@
             justify-content: center;
         }
         
-        /* 废弃了强行放大的 CSS，现在 100% 原汁原味完美填充 */
         .teal-tv-screen iframe {
             position: absolute;
             top: 0;
@@ -203,21 +202,25 @@
             display: flex; gap: 2rem; overflow-x: auto; scroll-snap-type: x mandatory;
             padding: 40px calc(50vw - 140px) 150px calc(50vw - 140px);
             scrollbar-width: none; cursor: grab;
+            -webkit-overflow-scrolling: touch; /* 提升 iOS 设备滚动丝滑度 */
         }
         .arc-scroll-container::-webkit-scrollbar { display: none; }
         .arc-scroll-container:active { cursor: grabbing; }
         
+        /* 🔥 移除 transform 的过渡动画，只保留阴影过渡，彻底解决滚动打架卡顿问题 */
         .arc-item {
             flex-shrink: 0; width: 280px; height: 360px; scroll-snap-align: center;
             background: #fff; padding: 12px 12px 50px 12px; border: 1px solid #ddd; border-radius: 4px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             transform-origin: bottom center; position: relative;
-            transition: transform 0.1s linear; 
+            will-change: transform;
+            transition: box-shadow 0.3s ease; 
         }
+        /* 电脑端的 Hover 动画单独强化 */
         .arc-item:hover {
             transform: translateY(-20px) scale(1.1) rotate(0deg) !important;
             z-index: 100; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
         }
         .arc-item img { width: 100%; height: 100%; object-fit: cover; border-radius: 2px; pointer-events: none; }
         .arc-caption { position: absolute; bottom: 12px; left: 0; width: 100%; text-align: center; font-family: 'Caveat', cursive; font-size: 1.5rem; color: #222; pointer-events: none;}
@@ -259,11 +262,10 @@
         .tape-r { top: -10px; right: -10px; transform: rotate(45deg); width: 60px; }
 
         /* ========================================= */
-        /* 📱 终极响应式适配区域 (所有设备的排版规则都在这) */
+        /* 📱 终极响应式舒展适配 (让手机端彻底呼吸起来) */
         /* ========================================= */
         
         @media (max-width: 1024px) {
-            /* 平板及以下，WORK 区转为竖排 */
             .work-container { display: flex; flex-direction: column; padding: 2.5rem; gap: 2rem; }
             .work-hero, .work-info, .work-timeline, .work-portfolio { grid-column: span 12; width: 100%; }
             .work-info { align-items: flex-start; text-align: left; }
@@ -272,52 +274,50 @@
         }
 
         @media (max-width: 768px) {
-            /* 手机端全局 */
-            header { padding: 1rem 1.5rem; flex-direction: column; gap: 15px; }
+            header { padding: 1rem 1rem; flex-direction: column; gap: 15px; }
             .logo { font-size: 1.2rem; }
             .toggle-btn { width: 100%; max-width: 300px; padding: 10px 20px; font-size: 0.85rem; }
             
-            /* WORK 手机端 */
-            #realm-work { padding: 7rem 1.5rem 4rem 1.5rem; }
-            .work-container { padding: 1.5rem; }
-            .work-hero h1 { font-size: 2.8rem; }
+            /* WORK 手机端：大幅缩小全局 Padding，让内部卡片撑开 */
+            #realm-work { padding: 6rem 1rem 3rem 1rem; }
+            .work-container { padding: 2rem 1.2rem; border-radius: 16px; gap: 2rem; }
+            .work-hero h1 { font-size: 2.5rem; margin-bottom: 1.5rem; }
+            .section-header { font-size: 1.4rem; }
+            .tl-company { font-size: 1.2rem; }
             .portfolio-grid { grid-template-columns: 1fr; gap: 1.5rem; }
 
-            /* LIFE 手机端 */
-            #realm-life { padding: 6rem 1.5rem 4rem 1.5rem; }
-            .poster-text-group { margin-bottom: 2rem; }
-            .script-text { font-size: 2.5rem; margin-left: 0; margin-bottom: -15px; transform: rotate(-2deg); }
-            .serif-black { font-size: 3rem; }
-            .serif-pink { font-size: 2.5rem; }
+            /* LIFE 手机端：移除不必要的左右挤压 */
+            #realm-life { padding: 6rem 0 4rem 0; }
+            .poster-text-group { margin-bottom: 3rem; padding: 0 1rem; }
+            .script-text { font-size: 2.2rem; margin-left: 0; margin-bottom: -10px; transform: rotate(-2deg); }
+            .serif-black { font-size: 2.8rem; }
+            .serif-pink { font-size: 2.2rem; margin-top: 2px; }
 
-            /* 📺 电视机手机端缝合 */
-            .tv-hero-container { margin: 2rem auto 4rem auto; flex-direction: column; }
+            /* 📺 电视机：最大化利用手机屏幕宽度 */
+            .tv-hero-container { margin: 2rem 1rem 4rem 1rem; flex-direction: column; }
             .teal-tv { width: 100%; max-width: 480px; padding: 15px; flex-direction: column; align-items: center; border-radius: 25px; gap: 15px;}
-            
-            /* 手机端也保持宽屏 16:9 比例！ */
-            .teal-tv-screen { width: 100%; height: auto; aspect-ratio: 16 / 9; border-width: 10px; border-radius: 20px 20px 10px 10px; }
-            
-            /* 把旋钮和喇叭改到屏幕下方 */
+            .teal-tv-screen { width: 100%; height: auto; aspect-ratio: 16 / 9; border-width: 8px; border-radius: 15px 15px 8px 8px; }
             .teal-dials { position: relative; right: auto; top: auto; flex-direction: row; justify-content: center; width: 100%; gap: 15px;}
             .dial-knob { width: 35px; height: 35px; }
             
-            /* 💬 气泡手机端堆叠 */
-            .floating-bubble { position: relative; top: auto !important; left: auto !important; right: auto !important; bottom: auto !important; transform: none !important; margin: 10px auto; display: block; max-width: 100%; animation: none !important;}
-            .fb-5 { margin: 20px auto 0 auto; width: 100%; max-width: 250px; }
+            /* 💬 气泡：更舒展的排版和行高 */
+            .floating-bubble { position: relative; top: auto !important; left: auto !important; right: auto !important; bottom: auto !important; transform: none !important; margin: 15px 1rem; display: block; max-width: calc(100% - 2rem); animation: none !important; padding: 18px 24px; line-height: 1.8; border-radius: 20px;}
+            .fb-5 { margin: 25px auto 0 auto; width: calc(100% - 2rem); max-width: 280px; }
             .floating-bubble.pop-in, .fb-5.pop-in { transform: none !important; animation: floatBubble 4s ease-in-out infinite alternate 0.6s !important; }
 
-            /* 其他板块手机端 */
-            .arc-header { font-size: 2.2rem; }
-            .arc-item { width: 240px; height: 320px; }
-            .arc-scroll-container { padding: 20px calc(50vw - 120px) 80px calc(50vw - 120px); }
+            /* 滚动卡片：稍微缩小一点卡片宽度，展现更多滑动空间 */
+            .arc-header { font-size: 2.2rem; padding: 0 1rem; }
+            .arc-item { width: 220px; height: 300px; }
+            .arc-scroll-container { padding: 20px calc(50vw - 110px) 80px calc(50vw - 110px); }
             
+            .diary-section { padding: 0 1.5rem; margin: 2rem auto 5rem auto; }
+            .moodboard-wrapper { padding: 0 1rem; }
             .masonry-grid { column-count: 2; column-gap: 15px; }
             .moodboard-header h2 { font-size: 2.2rem; }
             .moodboard-header p { font-size: 1.2rem; }
         }
 
         @media (max-width: 480px) {
-            /* 极小屏幕手机 */
             .masonry-grid { column-count: 1; }
             .work-hero h1 { font-size: 2.2rem; }
         }
@@ -391,7 +391,7 @@
                         <div class="port-info">
                             <h4>传统影视制作</h4>
                             <p>包含前期导演&剧本构思、现场实拍执行以及后期剪辑叙事等。</p>
-                            <a href="https://youtu.be/-QhS67ofl_8" class="port-link" target="_blank">WATCH ON YOUTUBE ↗</a>
+                            <a href="https://www.youtube.com/watch?v=你的链接3" class="port-link" target="_blank">WATCH ON YOUTUBE ↗</a>
                         </div>
                     </div>
                 </div>
@@ -412,7 +412,6 @@
             <div class="teal-tv">
                 <div class="teal-tv-screen">
                     <div class="live-tag">● LIVE</div>
-                    <!-- 🔥 补全了 https: 协议，B站控制面板现在可以随心点按啦！ -->
                     <iframe id="tvVideo" src="https://player.bilibili.com/player.html?isOutside=true&aid=116831650057662&bvid=BV14nT566EJW&cid=39498154069&p=1&autoplay=1" scrolling="no" frameborder="no" allowfullscreen="true"></iframe>
                 </div>
                 <div class="teal-dials">
@@ -617,9 +616,10 @@
         }, 400); 
     });
 
-    // --- 弧形滚动照片墙计算 ---
+    // --- 弧形滚动照片墙计算 (完美丝滑重构版) ---
     const arcContainer = document.getElementById('arcScroll');
     const arcItems = document.querySelectorAll('.arc-item');
+    let ticking = false; // 防抖开关，让JS渲染与屏幕刷新率对齐
 
     function updateArc() {
         if(!arcContainer || isWork) return; 
@@ -659,9 +659,19 @@
             arcContainer.scrollLeft = scrollLeft - walk;
         });
 
-        arcContainer.addEventListener('scroll', updateArc);
+        // 🔥 使用 requestAnimationFrame 保证手机端滑动绝不掉帧
+        arcContainer.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    updateArc();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+        
         window.addEventListener('resize', updateArc);
-        setInterval(updateArc, 100); 
+        // 删除了原本导致手机卡顿的 setInterval
     }
 
     // 点击复制微信的交互逻辑
@@ -724,7 +734,6 @@
         }
     }
 
-    // （针对旧本地视频的遗留代码，由于B站是iframe，该脚本对其失效，我已经顺手帮您清理了，保持代码干净）
 </script>
 </body>
 </html>
