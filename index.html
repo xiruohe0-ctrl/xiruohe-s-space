@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>XIRUO HE // DUALITY</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap');
@@ -16,10 +15,11 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
-        <body>
-  <div class="page">
+        
         body { width: 100%; min-height: 100vh; overflow-x: hidden; font-family: 'Space Grotesk', -apple-system, sans-serif; background-color: var(--work-bg); color: var(--work-text); transition: background-color 0.8s ease, color 0.8s ease; }
         body.life-mode { background-color: var(--life-bg); color: var(--life-text); }
+
+        img, video, iframe { max-width: 100%; }
 
         /* Background Effects */
         .dot-matrix { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; background-image: radial-gradient(rgba(0,0,0,0.08) 2px, transparent 2px); background-size: 30px 30px; opacity: 1; transition: opacity 0.6s ease; pointer-events: none; }
@@ -58,10 +58,10 @@
         .tools { display: flex; gap: 12px; margin-top: 2rem; flex-wrap: wrap; }
         .tools span { background: #fff; border: 1px solid #ddd; padding: 7px 18px; border-radius: 20px; font-size: 0.9rem; font-weight: 700; transition: 0.3s; cursor: pointer;}
         .tools span:hover { border-color: var(--work-red); color: var(--work-red); transform: translateY(-3px); }
-.work-info { grid-column: span 4; display: flex; flex-direction: column; align-items: flex-end; text-align: right; }
-.work-info p { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; }
-.work-info a, .copy-email { color: var(--work-text); text-decoration: none; border-bottom: 2px solid var(--work-red) !important; padding-bottom: 2px; cursor: pointer; transition: all 0.3s ease; display: inline-block; }
-.work-info a:hover, .copy-email:hover { color: var(--work-red); opacity: 0.8; }
+        .work-info { grid-column: span 4; display: flex; flex-direction: column; align-items: flex-end; text-align: right; }
+        .work-info p { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .work-info a, .copy-email { color: var(--work-text); text-decoration: none; border-bottom: 2px solid var(--work-red) !important; padding-bottom: 2px; cursor: pointer; transition: all 0.3s ease; display: inline-block; }
+        .work-info a:hover, .copy-email:hover { color: var(--work-red); opacity: 0.8; }
         .work-timeline { grid-column: span 12; margin-top: 2rem; border-top: 2px solid var(--work-text); padding-top: 2rem; }
         .section-header { font-size: 1.6rem; font-weight: 700; margin-bottom: 2.5rem; border-bottom: 5px solid var(--work-red); display: inline-block; padding-bottom: 6px; text-transform: uppercase; }
         .tl-row { display: grid; grid-template-columns: 1fr 2fr 1fr; padding: 1.6rem 0; border-bottom: 1px solid #ddd; align-items: center; transition: all 0.3s ease; border-left: 0px solid var(--work-red); }
@@ -93,34 +93,49 @@
         .script-text { font-family: 'Caveat', cursive; font-size: 4.5rem; color: var(--life-pink); transform: rotate(-5deg); display: block; margin-bottom: -40px; margin-left: -120px; position: relative; z-index: 5; text-shadow: 2px 2px 0 rgba(255,255,255,0.8); }
         .serif-black { font-family: 'Playfair Display', serif; font-size: 6.5rem; font-weight: 900; color: #1a1a1a; line-height: 0.9; letter-spacing: -2px; text-transform: uppercase; }
         .serif-pink { font-family: 'Playfair Display', serif; font-size: 6rem; font-weight: 900; color: var(--life-pink); line-height: 0.9; text-transform: uppercase; margin-top: 5px; }
-      /* 1. TV HERO CONTAINER & BUBBLES */
+        
+        /* 1. TV HERO CONTAINER & BUBBLES */
         .tv-hero-container {
             position: relative; max-width: 900px; margin: 3rem auto 10rem auto; z-index: 10;
             display: flex; justify-content: center; align-items: center;
         }
 
-        .teal-tv { background: var(--life-teal); border-radius: 40px; padding: 30px 110px 40px 30px; box-shadow: 15px 20px 30px rgba(0,0,0,0.15), inset -5px -8px 15px rgba(0,0,0,0.1); border: 2px solid #148f85; position: relative; z-index: 10; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);position: relative; }
+        .teal-tv { background: var(--life-teal); border-radius: 40px; padding: 30px 110px 40px 30px; box-shadow: 15px 20px 30px rgba(0,0,0,0.15), inset -5px -8px 15px rgba(0,0,0,0.1); border: 2px solid #148f85; position: relative; z-index: 10; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
         .teal-tv:hover { transform: scale(1.02) rotate(1deg); }
 
         .tv-feet { position: absolute; bottom: -15px; left: 15%; width: 70%; height: 20px; display: flex; justify-content: space-between; z-index: -1; }
         .tv-foot { width: 30px; height: 25px; background: var(--life-teal); border-radius: 0 0 10px 10px; border: 2px solid #148f85; border-top: none; }
-        .teal-tv-screen {
-    width: 480px;
-    aspect-ratio: 4 / 3;
-    background: #fff;
-    border-radius: 60px 60px 20px 20px;
-    border: 15px solid #111;
-    box-shadow: inset 0 0 25px rgba(0,0,0,0.6);
-
-    overflow: hidden;
-    position: relative;
-}
-        .teal-tv-screen video { width: 100%; height: 100%; object-fit: cover; }
         
-        .live-tag { position: absolute; top: 15px; left: 20px; background: rgba(217, 43, 43, 0.9); color: white; padding: 2px 8px; border-radius: 5px; font-size: 0.8rem; font-weight: bold; font-family: -apple-system, sans-serif; letter-spacing: 1px; animation: pulse 2s infinite; z-index: 10; }
+        /* 🔥 关键修复：给电视机做「宽屏升级」！16:9比例让B站原生的音量条完美露出 */
+        .teal-tv-screen {
+            width: 520px; /* 稍微加宽一点，更好看 */
+            aspect-ratio: 16 / 9; /* 宽屏比例！完美适配 */
+            background: #000;
+            border-radius: 30px 30px 15px 15px; /* 因为宽屏了，圆角稍微缩减更真实 */
+            border: 15px solid #111;
+            box-shadow: inset 0 0 25px rgba(0,0,0,0.6);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* 废弃了强行放大的 CSS，现在 100% 原汁原味完美填充 */
+        .teal-tv-screen iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            z-index: 1;
+        }
+        
+        .live-tag { position: absolute; top: 10px; left: 15px; background: rgba(217, 43, 43, 0.9); color: white; padding: 2px 8px; border-radius: 5px; font-size: 0.75rem; font-weight: bold; font-family: -apple-system, sans-serif; letter-spacing: 1px; animation: pulse 2s infinite; z-index: 10; pointer-events: none;}
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
-        .teal-dials { position: absolute; right: 30px; top: 45px; display: flex; flex-direction: column; gap: 20px; align-items: center; }
+        .teal-dials { position: absolute; right: 30px; top: 45px; display: flex; flex-direction: column; gap: 20px; align-items: center; z-index: 10;}
         .dial-knob { width: 45px; height: 45px; border-radius: 50%; background: #222; border: 3px solid var(--life-teal); box-shadow: 0 4px 8px rgba(0,0,0,0.4); position: relative; cursor: pointer; transition: 0.3s; }
         .dial-knob:hover { transform: rotate(45deg); }
         .dial-knob::after { content: ''; position: absolute; top: 5px; left: 20px; width: 4px; height: 12px; background: #fff; border-radius: 2px; }
@@ -175,7 +190,7 @@
         .fb-5:hover .fb-5-front { transform: translateY(-100%); opacity: 0; }
         .fb-5:hover .fb-5-back { transform: translateY(0); opacity: 1; }
 
-        /* 2. ARC SCROLL GALLERY (增强弧度版) */
+        /* 2. ARC SCROLL GALLERY */
         .arc-gallery-wrapper {
             width: 100vw; position: relative; left: 50%; transform: translateX(-50%);
             padding: 2rem 0; margin-bottom: 2rem; z-index: 15;
@@ -207,7 +222,7 @@
         .arc-item img { width: 100%; height: 100%; object-fit: cover; border-radius: 2px; pointer-events: none; }
         .arc-caption { position: absolute; bottom: 12px; left: 0; width: 100%; text-align: center; font-family: 'Caveat', cursive; font-size: 1.5rem; color: #222; pointer-events: none;}
 
-        /* 3. DIARY SECTION (留白随想) */
+        /* 3. DIARY SECTION */
         .diary-section {
             max-width: 700px; margin: 1rem auto 8rem auto; padding: 0 2rem;
             position: relative; z-index: 10;
@@ -217,7 +232,7 @@
         .diary-content p { margin-bottom: 1.5rem; }
         .diary-signature { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: #111; text-align: right; font-style: italic; }
 
-        /* 4. PHOTO DUMP MASONRY (完美找回手账拼贴板) */
+        /* 4. PHOTO DUMP MASONRY */
         .moodboard-wrapper { max-width: 1100px; margin: 0 auto 8rem auto; position: relative; z-index: 10; padding: 0 2rem; }
         .moodboard-header { text-align: center; margin-bottom: 4rem; }
         .moodboard-header h2 { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 900; color: #111; text-transform: uppercase; margin-bottom: 10px; }
@@ -243,102 +258,69 @@
         .tape-l { top: -10px; left: -10px; transform: rotate(-45deg); width: 60px; }
         .tape-r { top: -10px; right: -10px; transform: rotate(45deg); width: 60px; }
 
-        @media (max-width: 900px) {
-            .serif-black { font-size: 4rem; } .serif-pink { font-size: 3.5rem; }
-            .tv-hero-container { margin-top: 4rem; margin-bottom: 8rem; }
-            .teal-tv { padding: 15px; flex-direction: column; align-items: center; }
-            .teal-tv-screen { width: 100%; aspect-ratio: auto; height: 220px; }
-            .teal-dials { position: relative; right: auto; top: auto; flex-direction: row; margin-top: 15px; }
-            .dial-knob { margin-bottom: 0; } .speaker-grill { display: none; }
-            
-            .floating-bubble { position: relative; top: auto !important; left: auto !important; right: auto !important; bottom: auto !important; transform: none !important; margin: 15px auto; display: block; max-width: 90%; animation: none !important;}
-            .fb-5 { margin-left: auto; }
-            .floating-bubble.pop-in { transform: none !important; animation: floatBubble 4s ease-in-out infinite alternate 0.6s !important; }
-            .fb-5.pop-in { transform: none !important; animation: floatBubble 4s ease-in-out infinite alternate 0.6s !important; }
-            .tv-hero-container { flex-direction: column; }
-            
-            .masonry-grid { column-count: 2; }
+        /* ========================================= */
+        /* 📱 终极响应式适配区域 (所有设备的排版规则都在这) */
+        /* ========================================= */
+        
+        @media (max-width: 1024px) {
+            /* 平板及以下，WORK 区转为竖排 */
+            .work-container { display: flex; flex-direction: column; padding: 2.5rem; gap: 2rem; }
+            .work-hero, .work-info, .work-timeline, .work-portfolio { grid-column: span 12; width: 100%; }
+            .work-info { align-items: flex-start; text-align: left; }
+            .tl-row { grid-template-columns: 1fr; gap: 0.5rem; padding: 1rem 0; }
+            .tl-role { text-align: left; color: #888; }
         }
-        @media (max-width: 600px) { .masonry-grid { column-count: 1; } }
-.teal-tv-screen iframe {
-    position: absolute;
-    top: 50%;
-    left: 50%;
 
-    width: 120%;
-    height: 120%;
+        @media (max-width: 768px) {
+            /* 手机端全局 */
+            header { padding: 1rem 1.5rem; flex-direction: column; gap: 15px; }
+            .logo { font-size: 1.2rem; }
+            .toggle-btn { width: 100%; max-width: 300px; padding: 10px 20px; font-size: 0.85rem; }
+            
+            /* WORK 手机端 */
+            #realm-work { padding: 7rem 1.5rem 4rem 1.5rem; }
+            .work-container { padding: 1.5rem; }
+            .work-hero h1 { font-size: 2.8rem; }
+            .portfolio-grid { grid-template-columns: 1fr; gap: 1.5rem; }
 
-    transform: translate(-50%, -50%);
+            /* LIFE 手机端 */
+            #realm-life { padding: 6rem 1.5rem 4rem 1.5rem; }
+            .poster-text-group { margin-bottom: 2rem; }
+            .script-text { font-size: 2.5rem; margin-left: 0; margin-bottom: -15px; transform: rotate(-2deg); }
+            .serif-black { font-size: 3rem; }
+            .serif-pink { font-size: 2.5rem; }
 
-    border: none;
-}
+            /* 📺 电视机手机端缝合 */
+            .tv-hero-container { margin: 2rem auto 4rem auto; flex-direction: column; }
+            .teal-tv { width: 100%; max-width: 480px; padding: 15px; flex-direction: column; align-items: center; border-radius: 25px; gap: 15px;}
+            
+            /* 手机端也保持宽屏 16:9 比例！ */
+            .teal-tv-screen { width: 100%; height: auto; aspect-ratio: 16 / 9; border-width: 10px; border-radius: 20px 20px 10px 10px; }
+            
+            /* 把旋钮和喇叭改到屏幕下方 */
+            .teal-dials { position: relative; right: auto; top: auto; flex-direction: row; justify-content: center; width: 100%; gap: 15px;}
+            .dial-knob { width: 35px; height: 35px; }
+            
+            /* 💬 气泡手机端堆叠 */
+            .floating-bubble { position: relative; top: auto !important; left: auto !important; right: auto !important; bottom: auto !important; transform: none !important; margin: 10px auto; display: block; max-width: 100%; animation: none !important;}
+            .fb-5 { margin: 20px auto 0 auto; width: 100%; max-width: 250px; }
+            .floating-bubble.pop-in, .fb-5.pop-in { transform: none !important; animation: floatBubble 4s ease-in-out infinite alternate 0.6s !important; }
 
-.tv-overlay-btn {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
+            /* 其他板块手机端 */
+            .arc-header { font-size: 2.2rem; }
+            .arc-item { width: 240px; height: 320px; }
+            .arc-scroll-container { padding: 20px calc(50vw - 120px) 80px calc(50vw - 120px); }
+            
+            .masonry-grid { column-count: 2; column-gap: 15px; }
+            .moodboard-header h2 { font-size: 2.2rem; }
+            .moodboard-header p { font-size: 1.2rem; }
+        }
 
-    width: 40px;
-    height: 40px;
-
-    border-radius: 50%;
-    background: rgba(0,0,0,0.75);
-    color: white;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-size: 18px;
-    cursor: pointer;
-
-    z-index: 9999;
-}
-
-* {
-    box-sizing: border-box;
-}
-
-img, video, iframe {
-    max-width: 100%;
-}
-
-@media (max-width: 768px) {
-
-    .page {
-        padding: 12px;
-        gap: 12px;
-    }
-
-    .teal-tv {
-        width: 92vw;
-        max-width: 420px;
-    }
-
-    .tv-overlay-btn {
-        width: 34px;
-        height: 34px;
-        bottom: 12px;
-        right: 12px;
-        font-size: 16px;
-    }
-}
-      html, body {
-    width: 100%;
-    overflow-x: hidden;
-}
-
-.page {
-    max-width: 100%;
-    overflow-x: hidden;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    gap: 20px;
-    padding: 16px;
-}
+        @media (max-width: 480px) {
+            /* 极小屏幕手机 */
+            .masonry-grid { column-count: 1; }
+            .work-hero h1 { font-size: 2.2rem; }
+        }
     </style>
 </head>
 <body class="work-mode">
@@ -409,7 +391,7 @@ img, video, iframe {
                         <div class="port-info">
                             <h4>传统影视制作</h4>
                             <p>包含前期导演&剧本构思、现场实拍执行以及后期剪辑叙事等。</p>
-                            <a href="https://www.youtube.com/watch?v=你的链接3" class="port-link" target="_blank">WATCH ON YOUTUBE ↗</a>
+                            <a href="https://youtu.be/-QhS67ofl_8" class="port-link" target="_blank">WATCH ON YOUTUBE ↗</a>
                         </div>
                     </div>
                 </div>
@@ -427,19 +409,11 @@ img, video, iframe {
         </div>
 
         <div class="tv-hero-container">
-           <div class="teal-tv">
-    <div class="teal-tv-screen">
-        <div class="live-tag">● LIVE</div>
-
-        <iframe id="tvVideo"
-            src="//player.bilibili.com/player.html?isOutside=true&aid=116831650057662&bvid=BV14nT566EJW&cid=39498154069&p=1&autoplay=1"
-            scrolling="no"
-            frameborder="no"
-            allowfullscreen="true">
-        </iframe>
-    </div>
-
-    <div class="teal-dials">
+            <div class="teal-tv">
+                <div class="teal-tv-screen">
+                    <div class="live-tag">● LIVE</div>
+                    <!-- 🔥 补全了 https: 协议，B站控制面板现在可以随心点按啦！ -->
+                    <iframe id="tvVideo" src="https://player.bilibili.com/player.html?isOutside=true&aid=116831650057662&bvid=BV14nT566EJW&cid=39498154069&p=1&autoplay=1" scrolling="no" frameborder="no" allowfullscreen="true"></iframe>
                 </div>
                 <div class="teal-dials">
                     <div class="dial-knob"></div><div class="dial-knob"></div>
@@ -454,7 +428,7 @@ img, video, iframe {
 
             <!-- 松绑后的气泡 -->
             <div class="floating-bubble fb-1">👋 Hello! 欢迎来到另一面的我。在秩序与感性之间游走。</div>
-            <div class="floating-bubble fb-2">穿梭于不同维度的<strong> INFJ天蝎座 🦂 <br>一个在大湾区漫游的<strong>湖南银 🌶️</strong></div>
+            <div class="floating-bubble fb-2">穿梭于不同维度的<strong> INFJ天蝎座 🦂 </strong><br>一个在大湾区漫游的<strong>湖南银 🌶️</strong></div>
             <div class="floating-bubble fb-3">发散思维感受派，热衷<strong>美食探店&美学探究 🍜</strong>和那只<strong>可爱的咪 🐾</strong>。</div>
             <div class="floating-bubble fb-4">生活是不停歇的 <strong>Citywalk</strong>：天南地北都希望留下足迹。</div>
             
@@ -468,7 +442,7 @@ img, video, iframe {
         </div>
 
         <!-- 弧形滚动 (增强弧线效果) -->
-    <div class="arc-gallery-wrapper">
+        <div class="arc-gallery-wrapper">
             <h2 class="arc-header">Moments & Hobbies ✦</h2>
             <div class="scroll-hint">SWIPE / SCROLL ➔</div>
             <div class="arc-scroll-container" id="arcScroll">
@@ -515,14 +489,14 @@ img, video, iframe {
                 <p>会想很多：比如要不要做得更完整一点？结构再清晰一点？<br>但又会突然觉得麻烦——算了，不想弄了、或者说真的有必要做吗？</p>
                 
                 <p>所以整个过程基本就是来回横跳=-=<br>
-                   后来呢我就告诉自己：<strong>想到就做，不然会一直卡在那里。</strong></p>
+                    后来呢我就告诉自己：<strong>想到就做，不然会一直卡在那里。</strong></p>
                 
                 <p>于是断断续续鼓捣了一周，这个主页就出炉啦。<br>
-                   目前看，也没觉得它很“完成”，更像是一个暂时的存档版本。<br>
-                   有点样样通样样松，但也确实是我现在的真实状态。</p>
+                    目前看，也没觉得它很“完成”，更像是一个暂时的存档版本。<br>
+                    有点样样通样样松，但也确实是我现在的真实状态。</p>
                 
                 <p style="font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-top: 2.5rem; color: var(--life-pink); font-style: italic;">
-                   " 不过很多东西好像都是这样——<br>不是想清楚才开始，是开始了才慢慢变清楚一点。"
+                    " 不过很多东西好像都是这样——<br>不是想清楚才开始，是开始了才慢慢变清楚一点。"
                 </p>
             </div>
             
@@ -530,7 +504,7 @@ img, video, iframe {
         </div>
 
         <!-- Masonry Moodboard (无尽拼贴板) -->
-<div class="moodboard-wrapper">
+        <div class="moodboard-wrapper">
             <div class="moodboard-header">
                 <h2>Photo Dump.</h2>
                 <p>Random captures, vibes & daily fragments ✨</p>
@@ -549,7 +523,7 @@ img, video, iframe {
                 
                 <div class="masonry-item mb-film" style="position: relative; height: 180px; display: flex; align-items: center; justify-content: center; text-align: center;">
                     <div style="color: var(--life-teal); font-family: 'Space Grotesk', sans-serif; font-size: 0.95rem; letter-spacing: 2px; line-height: 1.6; padding: 0 10px;">
-                        必须说我是帮朋友出片的能手！
+                        必须说我是帮朋友出片的能手！<br>
                       欢迎找我一起玩！
                     </div>
                 </div>
@@ -582,7 +556,9 @@ img, video, iframe {
                 </div>
 
             </div>
-        </div> </main>
+        </div> 
+    </main>
+
 <script>
     let isWork = true;
     const body = document.body;
@@ -600,7 +576,7 @@ img, video, iframe {
         }
     }
 
-    // 丝滑淡入淡出转场 (Bug 修复版！)
+    // 丝滑淡入淡出转场 
     switcher.addEventListener('click', () => {
         if(isAnimating) return;
         isAnimating = true;
@@ -625,7 +601,7 @@ img, video, iframe {
             
             // 2. 淡入下一层
             nextRealm.classList.add('active');
-            nextRealm.style.opacity = '1'; // 👈 这里是关键修复！强制把下一层设为可见！
+            nextRealm.style.opacity = '1'; 
             
             if (!isWork) {
                 centerArc();
@@ -715,55 +691,40 @@ img, video, iframe {
             }, 2000);
         }
     }
-  // 点击复制邮箱逻辑
-        function copyEmail(e) {
-            e.stopPropagation();
-            const email = "xiruohe0@gmail.com";
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(email).then(() => { showEmailFeedback(); });
-            } else {
-                let textArea = document.createElement("textarea");
-                textArea.value = email;
-                document.body.appendChild(textArea);
-                textArea.select();
-                try { document.execCommand('copy'); showEmailFeedback(); } catch (err) {}
-                document.body.removeChild(textArea);
-            }
+  
+    // 点击复制邮箱逻辑
+    function copyEmail(e) {
+        e.stopPropagation();
+        const email = "xiruohe0@gmail.com";
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(email).then(() => { showEmailFeedback(); });
+        } else {
+            let textArea = document.createElement("textarea");
+            textArea.value = email;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try { document.execCommand('copy'); showEmailFeedback(); } catch (err) {}
+            document.body.removeChild(textArea);
         }
+    }
 
-        // 复制成功后的文字变化反馈
-        function showEmailFeedback() {
-            const emailText = document.getElementById('workEmail');
-            if(emailText) {
-                const originalText = "xiruohe0@gmail.com";
-                emailText.innerHTML = "COPIED! ✔";
-                emailText.style.color = "var(--work-red)";
-                
-                // 2秒后恢复原样
-                setTimeout(() => {
-                    emailText.innerHTML = originalText;
-                    emailText.style.color = "var(--work-text)";
-                }, 2000);
-            }
+    // 复制成功后的文字变化反馈
+    function showEmailFeedback() {
+        const emailText = document.getElementById('workEmail');
+        if(emailText) {
+            const originalText = "xiruohe0@gmail.com";
+            emailText.innerHTML = "COPIED! ✔";
+            emailText.style.color = "var(--work-red)";
+            
+            // 2秒后恢复原样
+            setTimeout(() => {
+                emailText.innerHTML = originalText;
+                emailText.style.color = "var(--work-text)";
+            }, 2000);
         }
-// 点击电视屏幕切换静音/有声音
-        function toggleMute() {
-            const video = document.getElementById('tvVideo');
-            if (video) {
-                // 取反静音状态
-                video.muted = !video.muted;
-                
-                // 炫酷的小反馈：如果开启了音量，让整个电视机晃动一下
-                const tv = document.querySelector('.teal-tv');
-                if (!video.muted && tv) {
-                    tv.style.transform = 'scale(1.05) rotate(-1deg)';
-                    setTimeout(() => {
-                        tv.style.transform = '';
-                    }, 200);
-                }
-            }
-        }
-      </script>
-</div>
-      </body>
+    }
+
+    // （针对旧本地视频的遗留代码，由于B站是iframe，该脚本对其失效，我已经顺手帮您清理了，保持代码干净）
+</script>
+</body>
 </html>
