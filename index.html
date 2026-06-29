@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XIRUO HE // DUALITY</title>
@@ -261,7 +262,6 @@
 .teal-tv-screen iframe {
     position: absolute;
     top: 50%;
-
     left: 50%;
 
     width: 120%;
@@ -271,28 +271,8 @@
 
     border: none;
 }
-      .tv-overlay-btn {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
 
-    width: 40px;
-    height: 40px;
-
-    border-radius: 50%;
-    background: rgba(0,0,0,0.6);
-    color: white;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-size: 18px;
-    cursor: pointer;
-
-    z-index: 999;
-}
-      .tv-overlay-btn {
+.tv-overlay-btn {
     position: absolute;
     bottom: 20px;
     right: 20px;
@@ -312,7 +292,40 @@
     cursor: pointer;
 
     z-index: 9999;
-    pointer-events: auto;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+img, video, iframe {
+    max-width: 100%;
+}
+
+/* 📱 手机端适配（只保留这一套） */
+@media (max-width: 768px) {
+
+    body {
+        overflow-x: hidden;
+    }
+
+    .teal-tv {
+        width: 92vw;
+        max-width: 480px;
+        margin: 0 auto;
+    }
+
+    .teal-tv-screen {
+        width: 100%;
+    }
+
+    .tv-overlay-btn {
+        width: 34px;
+        height: 34px;
+        bottom: 12px;
+        right: 12px;
+        font-size: 16px;
+    }
 }
     </style>
 </head>
